@@ -1,0 +1,65 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: "jacoco"
+
+defaultTasks 'clean', 'build'
+
+sourceSets {
+  main {
+     java {
+      srcDirs = ['src/main/java']
+    }
+    resources {
+      srcDirs = ['src/main/resources']
+    }
+  }
+  test {
+    java {
+     srcDirs = ['src/test/java']; 
+    }
+  }
+}
+println "buildDir----${buildDir}"
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        csv.enabled true
+        html.destination "${buildDir}/jacocoHtml"
+        csv.destination "${buildDir}/jacococsv"
+    }
+}
+
+test {
+  maxParallelForks = 4
+  maxHeapSize = "2048m"
+  afterTest { TestDescriptor td, TestResult tr ->
+    println "${tr} ${td}"
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '3.5'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+	maven { url = "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+  compile (
+    'log4j:log4j:1.2.16',
+    'org.apache.commons:commons-lang3:3.6',
+    'org.apache.logging.log4j:log4j-api:2.10.0', 
+    'commons-lang:commons-lang:2.0', 
+    'org.apache.poi:poi:3.17', 
+    'org.apache.poi:poi-ooxml:3.17', 
+    'junit:junit:4.12',
+    'org.mockito:mockito-all:1.10.19',
+    'org.powermock:powermock-mockito-release-full:1.6.2',
+  )
+}

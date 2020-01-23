@@ -12,6 +12,7 @@ public class ServiceException extends Exception {
 	private static final long serialVersionUID = -1303172439293583927L;
 
 	public ServiceException(final String errorMsg, final Throwable throwable){
+		System.out.println("gg");
 		super(errorMsg, throwable);
 	}
 }
